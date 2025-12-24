@@ -1,0 +1,21 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "diffs",
+	"routes": [
+		{
+			"pattern": "diffs.copperdevs.dev",
+			"zone_id": "c7b4c06155fc27ed7c56cb8654eb9a39",
+			"custom_domain": true
+		}
+	],
+	"workers_dev": false,
+	"compatibility_date": "2025-12-24",
+	"assets": {
+		"not_found_handling": "single-page-application"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"minify": true,
+	"dev": { "port": 5173 }
+}
