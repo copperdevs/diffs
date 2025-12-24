@@ -98,10 +98,6 @@ function App() {
 			<header className="app-header">
 				<div className="app-title">
 					<h1>Diff playground</h1>
-					<p>
-						Paste code on the left and right, then tune how the diff
-						renders.
-					</p>
 				</div>
 				<div className="app-actions">
 					<ToggleGroup
@@ -130,13 +126,12 @@ function App() {
 			<div className="editor-grid">
 				<div className="panel">
 					<div className="panel-heading">
-						<span className="panel-title">Before</span>
 						<Field.Root className="field">
 							<Field.Label
 								className="field-label"
 								htmlFor="before-name"
 							>
-								Filename
+								<span className="panel-title">Before</span>
 							</Field.Label>
 							<Input
 								id="before-name"
@@ -160,13 +155,12 @@ function App() {
 
 				<div className="panel">
 					<div className="panel-heading">
-						<span className="panel-title">After</span>
 						<Field.Root className="field">
 							<Field.Label
 								className="field-label"
 								htmlFor="after-name"
 							>
-								Filename
+								<span className="panel-title">After</span>
 							</Field.Label>
 							<Input
 								id="after-name"
