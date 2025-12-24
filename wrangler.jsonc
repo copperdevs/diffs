@@ -3,7 +3,7 @@
 	"name": "diffs",
 	"routes": [
 		{
-			"pattern": "diffs.copperdevs.dev",
+			"pattern": "diffs.copperdevs.com",
 			"zone_id": "c7b4c06155fc27ed7c56cb8654eb9a39",
 			"custom_domain": true
 		}
