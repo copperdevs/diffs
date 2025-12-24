@@ -1,22 +1,9 @@
-import {
-	type FileContents,
-	MultiFileDiff,
-	type SupportedLanguages,
-} from "@pierre/diffs/react";
-import {
-	Box,
-	Button,
-	Card,
-	Flex,
-	Grid,
-	SegmentedControl,
-	Select,
-	Separator,
-	Switch,
-	Text,
-	TextArea,
-	TextField,
-} from "@radix-ui/themes";
+import { Button } from "@base-ui/react/button";
+import { Field } from "@base-ui/react/field";
+import { Input } from "@base-ui/react/input";
+import { Toggle } from "@base-ui/react/toggle";
+import { ToggleGroup } from "@base-ui/react/toggle-group";
+import { type FileContents, MultiFileDiff } from "@pierre/diffs/react";
 import { useMemo, useState } from "react";
 
 const DIFF_THEMES = { dark: "pierre-dark", light: "pierre-light" } as const;
@@ -96,96 +83,116 @@ function App() {
 		setRightName(leftName);
 	};
 
+	const handleDiffStyleChange = (
+		groupValue: DiffStyleValue[],
+		_eventDetails: unknown,
+	) => {
+		const next = groupValue[0];
+		if (next) {
+			setDiffStyle(next);
+		}
+	};
+
 	return (
-		<Box
-			p="4"
-			style={{
-				height: "100dvh",
-				display: "flex",
-				flexDirection: "column",
-				gap: "16px",
-			}}
-		>
-			<Flex align="center" justify="between">
-				<Flex gap="2" align="baseline">
-					<Text weight="bold" size="6">
-						Diff playground
-					</Text>
-					<Text color="gray" size="2">
+		<div className="app-shell">
+			<header className="app-header">
+				<div className="app-title">
+					<h1>Diff playground</h1>
+					<p>
 						Paste code on the left and right, then tune how the diff
 						renders.
-					</Text>
-				</Flex>
-				<Flex gap="4" align="center">
-					<SegmentedControl.Root
-						value={diffStyle}
-						onValueChange={(value) =>
-							setDiffStyle(value as DiffStyleValue)
-						}
+					</p>
+				</div>
+				<div className="app-actions">
+					<ToggleGroup
+						className="segmented-control"
+						value={[diffStyle]}
+						onValueChange={handleDiffStyleChange}
+						aria-label="Diff view style"
 					>
-						<SegmentedControl.Item value="split">
+						<Toggle value="split" className="segment">
 							Split
-						</SegmentedControl.Item>
-						<SegmentedControl.Item value="unified">
+						</Toggle>
+						<Toggle value="unified" className="segment">
 							Unified
-						</SegmentedControl.Item>
-					</SegmentedControl.Root>
-					<Button variant="ghost" onClick={swapSides}>
+						</Toggle>
+					</ToggleGroup>
+					<Button
+						className="ghost-button"
+						type="button"
+						onClick={swapSides}
+					>
 						Swap sides
 					</Button>
-				</Flex>
-			</Flex>
+				</div>
+			</header>
 
-			<Grid columns="1fr 1fr" gap="3">
-				<Card>
-					<Flex direction="column" gap="3">
-						<Flex direction="column" gap="1">
-							<Text weight="medium">Before</Text>
-							<TextField.Root
+			<div className="editor-grid">
+				<div className="panel">
+					<div className="panel-heading">
+						<span className="panel-title">Before</span>
+						<Field.Root className="field">
+							<Field.Label
+								className="field-label"
+								htmlFor="before-name"
+							>
+								Filename
+							</Field.Label>
+							<Input
+								id="before-name"
+								className="text-input"
 								value={leftName}
-								onChange={(event) =>
-									setLeftName(event.target.value)
-								}
+								onValueChange={(value) => setLeftName(value)}
 								placeholder="Filename"
+								aria-label="Before filename"
 							/>
-						</Flex>
-						<TextArea
-							value={leftContent}
-							onChange={(event) =>
-								setLeftContent(event.target.value)
-							}
-							rows={14}
-							style={{ fontFamily: "var(--code-font-family)" }}
-						/>
-					</Flex>
-				</Card>
+						</Field.Root>
+					</div>
+					<textarea
+						className="code-area"
+						value={leftContent}
+						onChange={(event) => setLeftContent(event.target.value)}
+						rows={14}
+						spellCheck="false"
+						aria-label="Before content"
+					/>
+				</div>
 
-				<Card>
-					<Flex direction="column" gap="3">
-						<Flex direction="column" gap="1">
-							<Text weight="medium">After</Text>
-							<TextField.Root
+				<div className="panel">
+					<div className="panel-heading">
+						<span className="panel-title">After</span>
+						<Field.Root className="field">
+							<Field.Label
+								className="field-label"
+								htmlFor="after-name"
+							>
+								Filename
+							</Field.Label>
+							<Input
+								id="after-name"
+								className="text-input"
 								value={rightName}
-								onChange={(event) =>
-									setRightName(event.target.value)
-								}
+								onValueChange={(value) => setRightName(value)}
 								placeholder="Filename"
+								aria-label="After filename"
 							/>
-						</Flex>
-						<TextArea
-							value={rightContent}
-							onChange={(event) =>
-								setRightContent(event.target.value)
-							}
-							rows={14}
-							style={{ fontFamily: "var(--code-font-family)" }}
-						/>
-					</Flex>
-				</Card>
-			</Grid>
+						</Field.Root>
+					</div>
+					<textarea
+						className="code-area"
+						value={rightContent}
+						onChange={(event) =>
+							setRightContent(event.target.value)
+						}
+						rows={14}
+						spellCheck="false"
+						aria-label="After content"
+					/>
+				</div>
+			</div>
 
-			<Card style={{ flex: 1, minHeight: "320px", padding: 0 }}>
-				<Box p="0" style={{ height: "100%", overflow: "auto" }}>
+			<div className="diff-card">
+				<div className="diff-inner">
 					<MultiFileDiff
 						oldFile={oldFile}
 						newFile={newFile}
@@ -201,9 +208,9 @@ function App() {
 						}}
 						style={{ height: "100%", width: "100%" }}
 					/>
-				</Box>
-			</Card>
-		</Box>
+				</div>
+			</div>
+		</div>
 	);
 }
 
